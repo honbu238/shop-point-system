@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -7,7 +6,7 @@
 <title>ポイントカード</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&family=DM+Serif+Display&display=swap');
- 
+
   :root {
     --bg: #0f0f0f;
     --surface: #1a1a1a;
@@ -20,9 +19,9 @@
     --danger: #c0392b;
     --radius: 16px;
   }
- 
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
- 
+
   body {
     background: var(--bg);
     color: var(--text);
@@ -33,7 +32,7 @@
     flex-direction: column;
     align-items: center;
   }
- 
+
   /* ── HEADER ── */
   header {
     width: 100%;
@@ -69,7 +68,7 @@
     transition: all 0.2s;
   }
   .staff-btn:hover { border-color: var(--gold); color: var(--gold); }
- 
+
   /* ── SCREENS ── */
   .screen {
     display: none;
@@ -81,7 +80,7 @@
     flex: 1;
   }
   .screen.active { display: flex; }
- 
+
   /* ── CARD ── */
   .point-card {
     background: linear-gradient(135deg, #1e1a10 0%, #2a2210 50%, #1a1608 100%);
@@ -133,7 +132,7 @@
     color: #444;
     letter-spacing: 0.08em;
   }
- 
+
   /* ── STAMP GRID ── */
   .stamp-section { }
   .stamp-label {
@@ -184,7 +183,7 @@
   .next-reward-icon { font-size: 22px; }
   .next-reward-text { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
   .next-reward-text strong { color: var(--gold); font-size: 14px; }
- 
+
   /* ── FORMS ── */
   .screen-title {
     font-family: 'DM Serif Display', serif;
@@ -218,7 +217,7 @@
     width: 100%;
   }
   input:focus { border-color: var(--gold-dim); }
- 
+
   .btn-primary {
     background: var(--gold);
     color: #0f0f0f;
@@ -236,7 +235,7 @@
   .btn-primary:hover { background: var(--gold-light); }
   .btn-primary:active { transform: scale(0.98); }
   .btn-primary:disabled { background: #444; color: #777; cursor: not-allowed; }
- 
+
   .btn-ghost {
     background: transparent;
     color: var(--text-muted);
@@ -250,7 +249,7 @@
     width: 100%;
   }
   .btn-ghost:hover { border-color: var(--gold-dim); color: var(--gold-dim); }
- 
+
   /* ── NOTICE ── */
   .notice {
     background: var(--surface2);
@@ -263,7 +262,7 @@
   }
   .notice.success { border-left-color: #4caf50; color: #81c784; background: #1a2e1a; }
   .notice.error { border-left-color: var(--danger); color: #e57373; background: #2e1a1a; }
- 
+
   /* ── STAFF PANEL ── */
   .staff-header {
     background: var(--surface2);
@@ -276,7 +275,7 @@
     align-items: center;
     gap: 8px;
   }
- 
+
   .amount-display {
     background: var(--surface2);
     border-radius: 10px;
@@ -295,13 +294,13 @@
     letter-spacing: 0.1em;
     margin-top: 4px;
   }
- 
+
   .divider {
     height: 1px;
     background: #2a2a2a;
     margin: 4px 0;
   }
- 
+
   /* ── LOADING ── */
   .loading {
     display: inline-block;
@@ -314,7 +313,7 @@
     margin-right: 8px;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
- 
+
   /* ── HISTORY ── */
   .history-list { display: flex; flex-direction: column; gap: 10px; }
   .history-item {
@@ -328,11 +327,11 @@
   .history-item .hi-date { font-size: 11px; color: var(--text-muted); }
   .history-item .hi-note { font-size: 13px; margin-top: 2px; }
   .history-item .hi-pts { font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--gold); }
- 
+
 </style>
 </head>
 <body>
- 
+
 <!-- ====== HEADER ====== -->
 <header>
   <div>
@@ -341,7 +340,7 @@
   </div>
   <button class="staff-btn" onclick="showScreen('staff-login')">スタッフ</button>
 </header>
- 
+
 <!-- ====== SCREEN: TOP ====== -->
 <div id="screen-top" class="screen active">
   <div class="screen-title">はじめてご利用の方</div>
@@ -360,7 +359,7 @@
   <button class="btn-ghost" onclick="loginCustomer()">ポイントを確認する</button>
   <div id="top-notice" class="notice" style="display:none;"></div>
 </div>
- 
+
 <!-- ====== SCREEN: MY CARD ====== -->
 <div id="screen-mycard" class="screen">
   <div class="point-card">
@@ -371,13 +370,13 @@
     <span class="card-points-unit">pt</span>
     <div class="card-id" id="mc-id">ID: —</div>
   </div>
- 
+
   <div class="stamp-section">
     <div class="stamp-label">スタンプ（40個で特典）</div>
     <div class="stamp-grid" id="stamp-grid"></div>
     <div class="stamp-progress" id="stamp-progress"></div>
   </div>
- 
+
   <div class="next-reward" id="next-reward-box">
     <div class="next-reward-icon">🎁</div>
     <div class="next-reward-text">
@@ -385,15 +384,15 @@
       <span id="next-reward-hint">次の特典まであと <strong id="pts-to-next">—</strong> pt</span>
     </div>
   </div>
- 
+
   <div id="history-section">
     <div class="stamp-label" style="margin-bottom:12px;">履歴</div>
     <div class="history-list" id="history-list"></div>
   </div>
- 
+
   <button class="btn-ghost" onclick="showScreen('top')">← トップに戻る</button>
 </div>
- 
+
 <!-- ====== SCREEN: STAFF LOGIN ====== -->
 <div id="screen-staff-login" class="screen">
   <div class="screen-title">スタッフ画面</div>
@@ -405,17 +404,17 @@
   <button class="btn-ghost" onclick="showScreen('top')">← 戻る</button>
   <div id="staff-login-notice" class="notice" style="display:none;"></div>
 </div>
- 
+
 <!-- ====== SCREEN: STAFF PANEL ====== -->
 <div id="screen-staff" class="screen">
   <div class="staff-header">🔐 スタッフモード</div>
- 
+
   <div class="input-group">
     <label>お客様のカードID</label>
     <input type="text" id="s-customer-id" placeholder="0000" maxlength="6" inputmode="numeric"
       oninput="lookupCustomer()">
   </div>
- 
+
   <div id="s-customer-info" style="display:none;">
     <div class="point-card" style="padding:18px 20px;">
       <div class="card-nick">確認中のお客様</div>
@@ -425,9 +424,9 @@
         <span class="card-points-unit">pt</span>
       </div>
     </div>
- 
+
     <div class="divider" style="margin:16px 0;"></div>
- 
+
     <div class="input-group">
       <label>ご購入金額（円）</label>
       <input type="number" id="s-amount" placeholder="1000" min="0" oninput="calcPoints()">
@@ -438,11 +437,11 @@
     </div>
     <button class="btn-primary" onclick="addPoints()">ポイントを付与する</button>
   </div>
- 
+
   <div id="s-notice" class="notice" style="display:none;"></div>
   <button class="btn-ghost" onclick="showScreen('top')">← トップに戻る</button>
 </div>
- 
+
 <script>
 // ============================================================
 //  設定 — ここだけ変更する
@@ -451,7 +450,7 @@ const GAS_URL = 'https://script.google.com/macros/s/AKfycbwy5Y_-VWAcKcBPf9dZatuw
 const STAFF_PASSWORD = 'staff1234';   // スタッフパスワード（後で変更可）
 const POINTS_PER_YEN = 0.01;          // 100円で1ポイント
 const STAMP_MAX = 40;                 // 満タン枚数
- 
+
 // ============================================================
 //  画面切替
 // ============================================================
@@ -460,7 +459,7 @@ function showScreen(name) {
   document.getElementById('screen-' + name).classList.add('active');
   window.scrollTo(0, 0);
 }
- 
+
 // ============================================================
 //  通知表示
 // ============================================================
@@ -473,7 +472,7 @@ function showNotice(id, msg, type = '') {
 function hideNotice(id) {
   document.getElementById(id).style.display = 'none';
 }
- 
+
 // ============================================================
 //  GAS通信
 // ============================================================
@@ -482,14 +481,14 @@ async function callGAS(params) {
   const res = await fetch(url);
   return res.json();
 }
- 
+
 // ============================================================
 //  お客様登録
 // ============================================================
 async function registerCustomer() {
   const nick = document.getElementById('reg-nick').value.trim();
   if (!nick) { showNotice('top-notice', 'ニックネームを入力してください', 'error'); return; }
- 
+
   showNotice('top-notice', '登録中…');
   try {
     const data = await callGAS({ action: 'register', nickname: nick });
@@ -503,14 +502,14 @@ async function registerCustomer() {
     showNotice('top-notice', 'サーバーに接続できません', 'error');
   }
 }
- 
+
 // ============================================================
 //  ログイン（ID照会）
 // ============================================================
 async function loginCustomer() {
   const id = document.getElementById('login-id').value.trim();
   if (!id) { showNotice('top-notice', 'カードIDを入力してください', 'error'); return; }
- 
+
   showNotice('top-notice', '確認中…');
   try {
     const data = await callGAS({ action: 'getCustomer', id });
@@ -524,7 +523,7 @@ async function loginCustomer() {
     showNotice('top-notice', 'サーバーに接続できません', 'error');
   }
 }
- 
+
 // ============================================================
 //  マイカード表示
 // ============================================================
@@ -533,7 +532,7 @@ function openMyCard(data) {
   document.getElementById('mc-id').textContent = 'ID: ' + data.id;
   const pts = Number(data.points) || 0;
   document.getElementById('mc-points').textContent = pts;
- 
+
   // スタンプグリッド
   const stampPts = pts % STAMP_MAX; // 現在のスタンプ進捗
   const grid = document.getElementById('stamp-grid');
@@ -545,12 +544,12 @@ function openMyCard(data) {
     grid.appendChild(s);
   }
   document.getElementById('stamp-progress').textContent = `${stampPts} / ${STAMP_MAX}`;
- 
+
   // 次の特典
   const ptsToNext = STAMP_MAX - stampPts;
   document.getElementById('next-reward-pts').textContent = STAMP_MAX;
   document.getElementById('pts-to-next').textContent = ptsToNext;
- 
+
   // 履歴
   const histList = document.getElementById('history-list');
   histList.innerHTML = '';
@@ -564,23 +563,23 @@ function openMyCard(data) {
   } else {
     histList.innerHTML = '<div style="font-size:12px;color:var(--text-muted);text-align:center;">まだ履歴がありません</div>';
   }
- 
+
   showScreen('mycard');
 }
- 
+
 // ============================================================
 //  スタッフログイン
 // ============================================================
 function staffLogin() {
   const pw = document.getElementById('staff-pw').value;
-  if (pw === fumiya238) {
+  if (pw === STAFF_PASSWORD) {
     document.getElementById('staff-pw').value = '';
     showScreen('staff');
   } else {
     showNotice('staff-login-notice', 'パスワードが違います', 'error');
   }
 }
- 
+
 // ============================================================
 //  スタッフ：お客様検索
 // ============================================================
@@ -601,7 +600,7 @@ async function lookupCustomer() {
     }
   } catch(e) {}
 }
- 
+
 // ============================================================
 //  スタッフ：ポイント計算
 // ============================================================
@@ -616,7 +615,7 @@ function calcPoints() {
     calcEl.style.display = 'none';
   }
 }
- 
+
 // ============================================================
 //  スタッフ：ポイント付与
 // ============================================================
@@ -625,7 +624,7 @@ async function addPoints() {
   const amount = Number(document.getElementById('s-amount').value) || 0;
   const pts = Math.floor(amount * POINTS_PER_YEN);
   if (pts <= 0) { showNotice('s-notice', '金額を入力してください', 'error'); return; }
- 
+
   showNotice('s-notice', '付与中…');
   try {
     const data = await callGAS({
@@ -649,4 +648,3 @@ async function addPoints() {
 </script>
 </body>
 </html>
- 
