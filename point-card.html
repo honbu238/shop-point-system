@@ -447,7 +447,7 @@
 // ============================================================
 //  設定 — ここだけ変更する
 // ============================================================
-const GAS_URL = 'YOUR_GAS_URL_HERE'; // GASデプロイ後に差し替え
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbwy5Y_-VWAcKcBPf9dZatuw-JYaG_KY8ADk8sSQ4vTu2guGe2oSAYf8A0PrXveFSXKW/exec'; // GASデプロイ後に差し替え
 const STAFF_PASSWORD = 'staff1234';   // スタッフパスワード（後で変更可）
 const POINTS_PER_YEN = 0.01;          // 100円で1ポイント
 const STAMP_MAX = 40;                 // 満タン枚数
@@ -573,7 +573,7 @@ function openMyCard(data) {
 // ============================================================
 function staffLogin() {
   const pw = document.getElementById('staff-pw').value;
-  if (pw === STAFF_PASSWORD) {
+  if (pw === fumiya238) {
     document.getElementById('staff-pw').value = '';
     showScreen('staff');
   } else {
