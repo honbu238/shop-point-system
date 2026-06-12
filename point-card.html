@@ -390,7 +390,8 @@
     <div class="history-list" id="history-list"></div>
   </div>
 
-  <button class="btn-ghost" onclick="showScreen('top')">← トップに戻る</button>
+  <button class="btn-ghost" onclick="showScreen('top')">← 別のカードに切り替える</button>
+  <button class="btn-ghost" style="color:#555;border-color:#333;font-size:11px;" onclick="clearCardFromLocal();showScreen('top')">このブラウザの記憶を消す</button>
 </div>
 
 <!-- ====== SCREEN: STAFF LOGIN ====== -->
@@ -447,9 +448,50 @@
 //  設定 — ここだけ変更する
 // ============================================================
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbwy5Y_-VWAcKcBPf9dZatuw-JYaG_KY8ADk8sSQ4vTu2guGe2oSAYf8A0PrXveFSXKW/exec'; // GASデプロイ後に差し替え
-const STAFF_PASSWORD = 'staff1234';   // スタッフパスワード（後で変更可）
+const STAFF_PASSWORD = 'hime238';   // スタッフパスワード（後で変更可）
 const POINTS_PER_YEN = 0.01;          // 100円で1ポイント
 const STAMP_MAX = 40;                 // 満タン枚数
+
+// ============================================================
+//  ブラウザ記憶（カードID保存）
+// ============================================================
+function saveCardToLocal(id, nickname) {
+  try {
+    localStorage.setItem('pointcard_id', id);
+    localStorage.setItem('pointcard_nick', nickname);
+  } catch(e) {}
+}
+function loadCardFromLocal() {
+  try {
+    return {
+      id: localStorage.getItem('pointcard_id'),
+      nick: localStorage.getItem('pointcard_nick')
+    };
+  } catch(e) { return { id: null, nick: null }; }
+}
+function clearCardFromLocal() {
+  try {
+    localStorage.removeItem('pointcard_id');
+    localStorage.removeItem('pointcard_nick');
+  } catch(e) {}
+}
+
+// ページ読み込み時：保存済みカードがあれば自動表示
+window.addEventListener('load', async () => {
+  const saved = loadCardFromLocal();
+  if (saved.id) {
+    showNotice('top-notice', '前回のカードを読み込み中…');
+    try {
+      const data = await callGAS({ action: 'getCustomer', id: saved.id });
+      if (data.success) {
+        openMyCard(data);
+        return;
+      }
+    } catch(e) {}
+    // 失敗したらトップ表示
+    document.getElementById('top-notice').style.display = 'none';
+  }
+});
 
 // ============================================================
 //  画面切替
@@ -493,6 +535,7 @@ async function registerCustomer() {
   try {
     const data = await callGAS({ action: 'register', nickname: nick });
     if (data.success) {
+      saveCardToLocal(data.id, data.nickname);
       showNotice('top-notice', `カードID: ${data.id} で登録しました！`, 'success');
       setTimeout(() => openMyCard(data), 1200);
     } else {
@@ -514,6 +557,7 @@ async function loginCustomer() {
   try {
     const data = await callGAS({ action: 'getCustomer', id });
     if (data.success) {
+      saveCardToLocal(data.id, data.nickname);
       hideNotice('top-notice');
       openMyCard(data);
     } else {
